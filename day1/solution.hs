@@ -16,7 +16,7 @@ getBiggest :: [String] -> Int
 getBiggest strs = maximum $ getAmounts strs
 
 getThreeBiggest :: [String] -> Int
-getThreeBiggest strs = sum . take 3 . reverse . sort $ getAmounts strs
+getThreeBiggest = sum . take 3 . reverse . sort . getAmounts
 
 main :: IO ()
 main = do
