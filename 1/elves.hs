@@ -1,14 +1,12 @@
-import Data.Char
-import Data.List
-import System.IO
+import System.IO ( openFile, hGetContents, IOMode(ReadMode) )
 
 getAmounts :: [String] -> [Int]
 getAmounts strs = map sumStrings $ foldl accumulate [] strs
   where
     accumulate :: [[String]] -> String -> [[String]]
+    accumulate [] x = [[x]]
     accumulate acc [] = [] : acc
     accumulate (head : acc) x = (head ++ [x]) : acc
-    accumulate [] x = [[x]]
 
 sumStrings :: [String] -> Int
 sumStrings strs = sum $ map read strs
