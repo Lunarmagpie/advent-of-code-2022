@@ -7,7 +7,7 @@ getAmounts strs = map sumStrings $ foldl accumulate [] strs
     accumulate :: [[String]] -> String -> [[String]]
     accumulate [] x = [[x]]
     accumulate acc [] = [] : acc
-    accumulate (head : acc) x = (head ++ [x]) : acc
+    accumulate (head : acc) x = (x : head) : acc
 
 sumStrings :: [String] -> Int
 sumStrings strs = sum $ map read strs
