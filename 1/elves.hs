@@ -1,4 +1,4 @@
-import System.IO ( openFile, hGetContents, IOMode(ReadMode) )
+import System.IO (IOMode (ReadMode), hGetContents, openFile)
 
 getAmounts :: [String] -> [Int]
 getAmounts strs = map sumStrings $ foldl accumulate [] strs
