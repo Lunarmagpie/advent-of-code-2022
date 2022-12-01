@@ -13,7 +13,10 @@ sumStrings :: [String] -> Int
 sumStrings strs = sum $ map read strs
 
 getBiggest :: [String] -> Int
-getBiggest strs = sum . take 3 . reverse . sort $ getAmounts strs
+getBiggest strs = maximum $ getAmounts strs
+
+getThreeBiggest :: [String] -> Int
+getThreeBiggest strs = sum . take 3 . reverse . sort $ getAmounts strs
 
 main :: IO ()
 main = do
@@ -21,4 +24,5 @@ main = do
   content <- hGetContents file
   let fileLines = lines content
 
-  print $ getBiggest fileLines
+  putStr $ "The biggest is: " ++ show (getBiggest fileLines)
+  putStr $ "\nThe three biggest are: " ++ show (getThreeBiggest fileLines)
