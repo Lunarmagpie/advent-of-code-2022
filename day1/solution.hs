@@ -2,15 +2,12 @@ import Data.List (sort)
 import System.IO (IOMode (ReadMode), hGetContents, openFile)
 
 getAmounts :: [String] -> [Int]
-getAmounts strs = map sumStrings $ foldl accumulate [] strs
+getAmounts = foldl accumulate []
   where
-    accumulate :: [[String]] -> String -> [[String]]
-    accumulate [] x = [[x]]
-    accumulate acc [] = [] : acc
-    accumulate (head : acc) x = (x : head) : acc
-
-sumStrings :: [String] -> Int
-sumStrings strs = sum $ map read strs
+    accumulate :: [Int] -> String -> [Int]
+    accumulate [] x = [read x]
+    accumulate acc [] = 0 : acc
+    accumulate (head : acc) x = (read x + head) : acc
 
 getBiggest :: [String] -> Int
 getBiggest strs = maximum $ getAmounts strs
