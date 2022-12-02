@@ -53,6 +53,7 @@ getScore (Paper, Lose) = fromEnum Rock
 -- Scisors first
 getScore (Scisors, Win) = fromEnum Win + fromEnum Rock
 getScore (Scisors, Lose) = fromEnum Paper
+-- Otherwise its a tie
 getScore (a, b) = 3 + fromEnum a
 
 main :: IO ()
