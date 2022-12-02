@@ -5,14 +5,25 @@ import System.IO (IOMode (ReadMode), hGetContents, openFile)
 -- Paper    2
 -- Scisors  3
 
-data Shape = None | Rock | Paper | Scisors deriving (Enum, Eq, Show)
+data Shape = Rock | Paper | Scisors deriving (Show)
 
-data WinLoseTie = Win | Lose | Tie deriving (Eq, Show)
+instance Enum Shape where
+  fromEnum enum = case enum of
+    Rock -> 1
+    Paper -> 2
+    Scisors -> 3
 
-fromEnum' enum = case enum of
-  Win -> 6
-  Lose -> 0
-  Tie -> 3
+  toEnum = undefined
+
+data WinLoseTie = Win | Lose | Tie deriving (Show)
+
+instance Enum WinLoseTie where
+  fromEnum enum = case enum of
+    Win -> 6
+    Lose -> 0
+    Tie -> 3
+
+  toEnum = undefined
 
 getShapes :: [String] -> [(Shape, WinLoseTie)]
 getShapes = map getShapes
@@ -33,18 +44,16 @@ getShapes = map getShapes
     getWinLoseTie _ = error "Not a valid WinLoseTie"
 
 getScore :: (Shape, WinLoseTie) -> Int
-getScore (a, b)
-  | b == Tie = fromEnum' Tie + fromEnum a
-  -- Rock first
-  | a == Rock && b == Win = fromEnum' Win + fromEnum Paper
-  | a == Rock && b == Lose = fromEnum Scisors
-  -- Paper first
-  | a == Paper && b == Win = fromEnum' Win + fromEnum Scisors
-  | a == Paper && b == Lose = fromEnum Rock
-  -- Scisors First
-  | a == Scisors && b == Win = fromEnum' Win + fromEnum Rock
-  | a == Scisors && b == Lose = fromEnum Paper
-  | otherwise = error ("No case " ++ show (a, b))
+-- Rock first
+getScore (Rock, Win) = fromEnum Win + fromEnum Paper
+getScore (Rock, Lose) = fromEnum Scisors
+-- Paper first
+getScore (Paper, Win) = fromEnum Win + fromEnum Scisors
+getScore (Paper, Lose) = fromEnum Rock
+-- Scisors first
+getScore (Scisors, Win) = fromEnum Win + fromEnum Rock
+getScore (Scisors, Lose) = fromEnum Paper
+getScore (a, b) = 3 + fromEnum a
 
 main :: IO ()
 main = do
