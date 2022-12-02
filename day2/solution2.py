@@ -53,7 +53,6 @@ for left_shape, win_draw_tie in shapes:
     score += win_draw_tie.value
 
     if win_draw_tie == WIN_DRAW.TIE:
-        print("here")
         shape = left_shape
 
     # find the shape
