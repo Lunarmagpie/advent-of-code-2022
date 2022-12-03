@@ -1,5 +1,4 @@
 import Data.Char (ord)
-import Data.List
 import System.IO (IOMode (ReadMode), hGetContents, openFile)
 
 inBoth :: (String, String) -> Char
@@ -11,7 +10,7 @@ charScore char
   | otherwise = ord char - 64 + 26
 
 getScores :: [Char] -> Int
-getScores chars = sum $ map charScore chars
+getScores = sum . map charScore
 
 -- Return the priority for a single rucksack.
 getPriority :: String -> Int
@@ -21,7 +20,7 @@ getPriority line = charScore $ inBoth (left_pocket, right_pocket)
     right_pocket = drop (length line `div` 2) line
 
 getTotal :: [String] -> Int
-getTotal lines = sum $ map getPriority lines
+getTotal = sum . map getPriority
 
 main :: IO ()
 main = do

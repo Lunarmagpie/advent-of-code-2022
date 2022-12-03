@@ -1,5 +1,4 @@
 import Data.Char (ord)
-import Data.List
 import System.IO (IOMode (ReadMode), hGetContents, openFile)
 
 inBoth :: (String, String) -> [Char]
@@ -21,7 +20,7 @@ groupByThree [] = []
 groupByThree _ = error "INVALID INPUT"
 
 getTotal :: [String] -> Int
-getTotal lines = sum $ map (charScore . inThree) $ groupByThree lines
+getTotal = sum . map (charScore . inThree) . groupByThree
 
 main :: IO ()
 main = do
