@@ -13,7 +13,7 @@ inThree (a, b, c) = head $ inBoth (aAndB, c)
 charScore :: Char -> Int
 charScore char
   | ord char >= 97 = ord char - 96
-  | otherwise = ord char - 65 + 27
+  | otherwise = ord char - 64 + 26
 
 groupByThree :: [String] -> [(String, String, String)]
 groupByThree (x : y : z : xs) = (x, y, z) : groupByThree xs

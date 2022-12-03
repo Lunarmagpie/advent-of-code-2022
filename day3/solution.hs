@@ -8,7 +8,7 @@ inBoth (left, right) = head $ filter (`elem` right) left
 charScore :: Char -> Int
 charScore char
   | ord char >= 97 = ord char - 96
-  | otherwise = ord char - 65 + 27
+  | otherwise = ord char - 64 + 26
 
 getScores :: [Char] -> Int
 getScores chars = sum $ map charScore chars
