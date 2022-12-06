@@ -1,9 +1,9 @@
 import Data.List (elemIndex, groupBy, nub)
 
 findUniqueSeries :: Eq a => [a] -> Int -> Int
-findUniqueSeries content seriesLength = seriesLength + matches content
+findUniqueSeries content seriesLength = seriesLength + notMatches content
   where
-    matches = length . takeWhile (not . isMatch . take seriesLength) . iterate (drop 1)
+    notMatches = length . takeWhile (not . isMatch . take seriesLength) . iterate (drop 1)
 
 isMatch :: Eq a => [a] -> Bool
 isMatch arr = nub arr == arr
