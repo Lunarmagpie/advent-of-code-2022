@@ -1,13 +1,12 @@
-import Data.List (elemIndex, groupBy)
-import Distribution.Simple.Utils (ordNub)
+import Data.List (elemIndex, groupBy, nub)
 
-findUniqueSeries :: String -> Int -> Int
+findUniqueSeries :: Eq a => [a] -> Int -> Int
 findUniqueSeries content seriesLength = seriesLength + length (notMatches content)
   where
     notMatches = takeWhile (not . isMatch . take seriesLength) . iterate (drop 1)
 
-isMatch :: String -> Bool
-isMatch arr = ordNub arr == arr
+isMatch :: Eq a => [a] -> Bool
+isMatch arr = nub arr == arr
 
 main :: IO ()
 main = do
