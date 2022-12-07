@@ -56,12 +56,6 @@ insertDir tree (path : rest) fileanme newDir = case tree of
 insertDir (Folder tree) [] filename newDir = Folder (insert filename newDir tree)
 insertDir (File tree) [] filename newDir = error "Nothing will ever be inserted into a file."
 
-getDir :: Directory -> [String] -> Directory
-getDir d [] = d
-getDir d (x : xs) = case d of
-  Folder folder -> getDir (folder ! x) xs
-  File size -> error "Files are not directories so they wont be cded to."
-
 processCommands :: [String] -> ([String], Directory)
 processCommands fileLines = foldl processAnyCommand ([], Folder empty) (splitCommands fileLines)
   where
