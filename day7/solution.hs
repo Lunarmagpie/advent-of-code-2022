@@ -73,7 +73,7 @@ processCommands fileLines = foldl processAnyCommand ([], Folder empty) (splitCom
 totalUnder100000 :: [Int] -> Int
 totalUnder100000 = sum . filter (< 100000)
 
-smallestToDelete ::  Int -> [Int] -> Int
+smallestToDelete :: Int -> [Int] -> Int
 smallestToDelete totalSize = minimum . filter (> spaceNeeded)
   where
     freeSpace = 70000000 - totalSize
