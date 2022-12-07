@@ -73,8 +73,8 @@ processCommands fileLines = foldl processAnyCommand ([], Folder empty) (splitCom
 totalUnder100000 :: [Int] -> Int
 totalUnder100000 = sum . filter (< 100000)
 
-smallestToDelete :: [Int] -> Int -> Int
-smallestToDelete sizes totalSize = minimum $ filter (> spaceNeeded) sizes
+smallestToDelete ::  Int -> [Int] -> Int
+smallestToDelete totalSize = minimum . filter (> spaceNeeded)
   where
     freeSpace = 70000000 - totalSize
     spaceNeeded = 30000000 - freeSpace
@@ -87,4 +87,4 @@ main = do
   let (_, dir) = processCommands fileLines
 
   print $ totalUnder100000 $ directorySizes dir
-  print $ smallestToDelete (directorySizes dir) (directorySize dir)
+  print $ smallestToDelete (directorySize dir) (directorySizes dir)
