@@ -52,15 +52,15 @@ processLS (workingPath, directory) output = (workingPath, foldl lambda directory
 insertDir :: Directory -> [String] -> String -> Directory -> Directory
 insertDir tree (path : rest) fileanme newDir = case tree of
   Folder x -> Folder $ insert path (insertDir (x ! path) rest fileanme newDir) x
-  File x -> File x
+  File x -> error "Files should never be a directory we cd to."
 insertDir (Folder tree) [] filename newDir = Folder (insert filename newDir tree)
-insertDir (File tree) [] filename newDir = File tree
+insertDir (File tree) [] filename newDir = error "Nothing will ever be inserted into a file."
 
 getDir :: Directory -> [String] -> Directory
 getDir d [] = d
 getDir d (x : xs) = case d of
   Folder folder -> getDir (folder ! x) xs
-  File size -> error "hmmm interesting"
+  File size -> error "Files are not directories so they wont be cded to."
 
 processCommands :: [String] -> ([String], Directory)
 processCommands fileLines = foldl processAnyCommand ([], Folder empty) (splitCommands fileLines)
