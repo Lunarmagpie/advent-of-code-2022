@@ -1,7 +1,6 @@
-import Data.List (isPrefixOf, isSubsequenceOf, uncons)
+import Data.List (isPrefixOf, isSubsequenceOf)
 import Data.Map (Map, empty, insert, (!))
 import qualified Data.Map (map)
-import Debug.Trace (trace)
 
 data Directory = File Int | Folder (Map String Directory) deriving (Show)
 
