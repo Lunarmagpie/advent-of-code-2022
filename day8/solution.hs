@@ -2,11 +2,13 @@ import Data.Char (digitToInt)
 
 map2d = map . map
 
+directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
 to2DArray :: String -> [[Int]]
 to2DArray = map2d digitToInt . lines
 
 isVisible :: [[Int]] -> (Int, Int) -> Bool
-isVisible array (x, y) = inner (x, y) (1, 0) || inner (x, y) (-1, 0) || inner (x, y) (0, 1) || inner (x, y) (0, -1)
+isVisible array (x, y) = any (inner (x, y)) directions
   where
     number = array !! x !! y
     inner :: (Int, Int) -> (Int, Int) -> Bool
@@ -16,7 +18,7 @@ isVisible array (x, y) = inner (x, y) (1, 0) || inner (x, y) (-1, 0) || inner (x
       | otherwise = array !! (x + dx) !! (y + dy) < number && inner (x + dx, y + dy) (dx, dy)
 
 scenicScore :: [[Int]] -> (Int, Int) -> Int
-scenicScore array (x, y) = inner (x, y) (1, 0) * inner (x, y) (-1, 0) * inner (x, y) (0, 1) * inner (x, y) (0, -1)
+scenicScore array (x, y) = product $ map (inner (x, y)) directions
   where
     number = array !! x !! y
     inner :: (Int, Int) -> (Int, Int) -> Int
