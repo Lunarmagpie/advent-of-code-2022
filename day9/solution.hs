@@ -1,5 +1,4 @@
 import Data.List (nub)
-import Debug.Trace (trace)
 
 -- (x, y)
 type Coordinate = (Int, Int)
