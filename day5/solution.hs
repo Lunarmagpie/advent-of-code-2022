@@ -1,7 +1,7 @@
-import Data.List (isPrefixOf, transpose)
+import Data.List (isPrefixOf, iterate, transpose)
 import Data.Maybe (catMaybes, fromJust, isJust, mapMaybe)
-import Text.Read (readMaybe)
 import Debug.Trace (trace)
+import Text.Read (readMaybe)
 
 dropEnd n = reverse . drop n . reverse
 
@@ -16,10 +16,14 @@ chunksOf _ [] = []
 chunksOf n xs = take n xs : chunksOf n (drop n xs)
 
 parseStacks :: [String] -> [String]
-parseStacks = map trim . filter isNumLine . transpose . tail . reverse
-  where
-    isNumLine a = not ("[" `isPrefixOf` a || " " `isPrefixOf` a || "]" `isPrefixOf` a)
-    trim = takeWhile (/= ' ')
+parseStacks =
+  map (takeWhile (/= ' ') . head)
+    . takeWhile (not . null)
+    . iterate (drop 4)
+    . tail
+    . transpose
+    . tail
+    . reverse
 
 -- Count, From, To
 parseInput :: String -> (Int, Int, Int)
@@ -27,7 +31,7 @@ parseInput line = (head words_, words_ !! 1 - 1, words_ !! 2 - 1)
   where
     words_ = mapMaybe readMaybe $ words line
 
-applyMove :: ([Char] -> [Char])  -> [[Char]] -> (Int, Int, Int) -> [[Char]]
+applyMove :: ([Char] -> [Char]) -> [[Char]] -> (Int, Int, Int) -> [[Char]]
 applyMove app chars (count, from, to) = new2
   where
     dropped = app $ takeEnd count (chars !! from)
