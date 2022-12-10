@@ -16,7 +16,7 @@ addCycle numbers line
   | line == "noop" = listHead : numbers
   | otherwise = (amount + listHead) : replicate 2 listHead ++ newLst
   where
-    newLst = drop 1 numbers
+    newLst = tail numbers
     listHead = head numbers
     amount = read $ words line !! 1
 
