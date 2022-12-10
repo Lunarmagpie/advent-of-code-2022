@@ -1,5 +1,4 @@
 import Data.List (last)
-import Debug.Trace (trace)
 
 enumerate :: [a] -> [(Int, a)]
 enumerate = zip [0 ..]
