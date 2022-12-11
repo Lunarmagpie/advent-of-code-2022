@@ -1,25 +1,15 @@
 import Data.List (sort)
-import System.IO (IOMode (ReadMode), hGetContents, openFile)
+import Data.List.Split (splitOn)
 
-getAmounts :: [String] -> [Int]
-getAmounts = foldl accumulate []
-  where
-    accumulate :: [Int] -> String -> [Int]
-    accumulate [] x = [read x]
-    accumulate acc [] = 0 : acc
-    accumulate (head : acc) x = (read x + head) : acc
+partOne :: String -> Int
+partOne = maximum . map (sum . map read . lines) . splitOn "\n\n"
 
-getBiggest :: [String] -> Int
-getBiggest strs = maximum $ getAmounts strs
-
-getThreeBiggest :: [String] -> Int
-getThreeBiggest = sum . take 3 . reverse . sort . getAmounts
+partTwo :: String -> Int
+partTwo = sum . take 3 . reverse . sort . map (sum . map read . lines) . splitOn "\n\n"
 
 main :: IO ()
 main = do
-  file <- openFile "input.txt" ReadMode
-  content <- hGetContents file
-  let fileLines = lines content
+  content <- readFile "input.txt"
 
-  putStr $ "The biggest is: " ++ show (getBiggest fileLines)
-  putStr $ "\nThe three biggest are: " ++ show (getThreeBiggest fileLines)
+  putStr $ "The biggest is: " ++ show (partOne content)
+  putStr $ "\nThe three biggest are: " ++ show (partTwo content)
