@@ -53,8 +53,8 @@ genMonkeys = map (intoMoney . take 6) . takeWhile (not . null) . iterate (drop 7
     parseAdd line = AddN (read $ after (== '+') line)
     parseMult line = if "old" `isSubsequenceOf` after (== '*') line then MultSelf else MultN (read $ after (== '*') line)
 
-doOneMonkey :: Int -> [Monkey] -> [Monkey]
-doOneMonkey number monkeys = applyThrows (replace monkeys number newSlf) throws
+doOneMonkey :: Int -> Int -> [Monkey] -> [Monkey]
+doOneMonkey denominator number monkeys = applyThrows (replace monkeys number newSlf) throws
   where
     Monkey
       { items,
@@ -65,8 +65,6 @@ doOneMonkey number monkeys = applyThrows (replace monkeys number newSlf) throws
         inspected
       } = monkeys !! number
     throws = map getThrow items
-
-    denominator = product $ map test monkeys
 
     -- Return (Worry Amount, Monkey)
     getThrow :: Int -> (Int, Int)
@@ -116,16 +114,15 @@ applyThrow monkeys (amount, to) = replace monkeys to newMonkey
           inspected
         }
 
-doRound :: [Monkey] -> [Monkey]
-doRound monkeys = foldl (flip doOneMonkey) monkeys [0 .. (length monkeys - 1)]
+doRound :: Int -> [Monkey] -> [Monkey]
+doRound denominator monkeys = foldl (flip (doOneMonkey denominator)) monkeys [0 .. (length monkeys - 1)]
 
 main :: IO ()
 main = do
   content <- readFile "input.txt"
 
   let monkeys = genMonkeys (lines content)
+  let denominator = product $ map test monkeys
+  let endMonkeys = repeatFunc 10000 (doRound denominator) monkeys
 
-  let endMonkeys = repeatFunc 10000 doRound monkeys
-
-  print $ map inspected endMonkeys
   print $ (product . take 2 . reverse . sort . map inspected) endMonkeys
