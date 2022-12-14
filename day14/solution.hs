@@ -18,9 +18,6 @@ toPoints = map (toPoint . splitOn ",") . splitOn " -> "
   where
     toPoint [x1, y1] = (read x1, read y1)
 
-repeatList :: [a] -> [a]
-repeatList = concat . repeat
-
 getMap :: [[Line]] -> Grid
 getMap = foldl (foldl insertLine) M.empty
   where
