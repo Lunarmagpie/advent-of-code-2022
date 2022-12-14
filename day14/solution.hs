@@ -34,14 +34,13 @@ getMap = foldl (foldl insertLine) M.empty
       where
         insert = foldr (`M.insert` '#') grid
 
-dropSand :: Int -> Maybe Grid -> (Int, Int) -> Maybe Grid
-dropSand _ Nothing _ = Nothing
-dropSand max (Just grid) (x, y)
-  | (x, y) `M.member` grid = error "Already contains point"
+dropSand1 :: Int -> Maybe Grid -> (Int, Int) -> Maybe Grid
+dropSand1 _ Nothing _ = Nothing
+dropSand1 max (Just grid) (x, y)
   | y > max = Nothing
-  | not ((x, y + 1) `M.member` grid) = dropSand max (Just grid) (x, y + 1)
-  | not ((x - 1, y + 1) `M.member` grid) = dropSand max (Just grid) (x -1, y + 1)
-  | not ((x + 1, y + 1) `M.member` grid) = dropSand max (Just grid) (x + 1, y + 1)
+  | not ((x, y + 1) `M.member` grid) = dropSand1 max (Just grid) (x, y + 1)
+  | not ((x - 1, y + 1) `M.member` grid) = dropSand1 max (Just grid) (x -1, y + 1)
+  | not ((x + 1, y + 1) `M.member` grid) = dropSand1 max (Just grid) (x + 1, y + 1)
   | otherwise = Just $ M.insert (x, y) '0' grid
 
 dropSand2 :: Int -> Maybe Grid -> (Int, Int) -> Maybe Grid
@@ -61,6 +60,5 @@ main = do
   let pointsList = (concatMap toPoints . lines) content
   let max = maximum (map snd pointsList)
 
-  print $ ((+) (-1) . length . takeWhile isJust) $ scanl (dropSand max) (Just points) (repeat (500, 0))
-
+  print $ ((+) (-1) . length . takeWhile isJust) $ scanl (dropSand1 max) (Just points) (repeat (500, 0))
   print $ ((+) (-1) . length . takeWhile isJust) $ scanl (dropSand2 (max + 2)) (Just points) (repeat (500, 0))
